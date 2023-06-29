@@ -1,7 +1,7 @@
 
 import axios from "axios";
 
-axios.defaults.baseURL = 'https://6488234f0e2469c038fd0ab2.mockapi.io';
+axios.defaults.baseURL = 'https://6488234f0e2469c038fd0ab2.mockapi.io/users';
 
 
 export async function getTweets() {
