@@ -1,19 +1,19 @@
 
-import axios from "axios";
+// import axios from "axios";
 
-axios.defaults.baseURL = 'https://6488234f0e2469c038fd0ab2.mockapi.io/users';
-
-
-export async function getTweets() {
-    const { data } = await axios('/tweets')
-    return data;
-};
+// axios.defaults.baseURL = 'https://6488234f0e2469c038fd0ab2.mockapi.io/users';
 
 
-export async function putTweets(id, dataObj) {
-    const { data } = await axios.put(`/tweets/${id}`, dataObj);
-    return data;
-}
+// export async function getTweets() {
+//     const { data } = await axios('/tweets')
+//     return data;
+// };
+
+
+// export async function putTweets(id, dataObj) {
+//     const { data } = await axios.put(`/tweets/${id}`, dataObj);
+//     return data;
+// }
 
 // import axios from 'axios';
 

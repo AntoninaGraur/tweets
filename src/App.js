@@ -1,13 +1,19 @@
 
 import "./App.css";
-// import UserComponent from "./components/services/mock-api";
+import UserList from "./components/tweets/userTweets";
+
 
 function App() {
   return (
     <div>
       <header>
         {/* <UserComponent/> */}
+
       </header>
+
+      <>
+      <UserList/>
+      </>
     </div>
   );
 }
