@@ -1,12 +1,12 @@
 
 import "./App.css";
-import UserComponent from "./components/services/mock-api";
+// import UserComponent from "./components/services/mock-api";
 
 function App() {
   return (
     <div>
       <header>
-        <UserComponent/>
+        {/* <UserComponent/> */}
       </header>
     </div>
   );
