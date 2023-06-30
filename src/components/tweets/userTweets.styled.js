@@ -43,7 +43,7 @@ export const TweetsFollowerText = styled.div`
 
 export const LoadMore = styled.button`
   width: 120px;
-  height: 55px;
+  height: 56px;
   border-radius: 35px;
   color: black;
   background-color: rgba(235, 216, 255, 1);
