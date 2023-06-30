@@ -1,61 +1,110 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import userHero from "../images/main_hero.png";
+import {
+  Hero,
+  MainContainer,
+  UserMenu,
+  AvatarImg,
+  TweetsFollowerText,
+  LoadMore,
+} from "./userTweets.styled";
+import HenselAvatar from "../images/HanselAvatar.png";
 
 const UserCard = ({ user }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(user.followers);
 
   useEffect(() => {
-    // Перевіряємо, чи користувач був уже поставлений у стан Following
     const following = localStorage.getItem(`following_${user.id}`);
-    setIsFollowing(following === 'true');
+    setIsFollowing(following === "true");
   }, [user.id]);
 
   const handleFollow = () => {
     if (isFollowing) {
-      // Якщо користувач вже перебуває у стані Following, змінюємо на початковий стан
-      localStorage.setItem(`following_${user.id}`, 'false');
+      localStorage.setItem(`following_${user.id}`, "false");
       setIsFollowing(false);
-      setFollowerCount(prevCount => prevCount - 1);
+      setFollowerCount((prevCount) => prevCount - 1);
     } else {
-      // Якщо користувач не перебуває у стані Following, змінюємо на стан Following
-      localStorage.setItem(`following_${user.id}`, 'true');
+      localStorage.setItem(`following_${user.id}`, "true");
       setIsFollowing(true);
-      setFollowerCount(prevCount => prevCount + 1);
+      setFollowerCount((prevCount) => prevCount + 1);
     }
   };
 
   return (
-    <div className="user-card">
-      <div className="user-info">
-        <div className="avatar">{user.avatar}</div>
-        <div className="username">{user.user}</div>
-      </div>
-      <div className="user-actions">
-        <button onClick={handleFollow} className={isFollowing ? 'following' : ''}>
-          {isFollowing ? 'Following' : 'Follow'}
-        </button>
-        <div className="follower-count">{followerCount} followers</div>
-      </div>
-    </div>
+    <MainContainer>
+      <Hero>
+        <img src={userHero} alt={"user background"} />
+        <div>
+          <AvatarImg
+            src={HenselAvatar}
+            width={62}
+            height={62}
+            alt="user avatar"
+          />
+        </div>
+
+        <UserMenu>
+          <p>{user.user}</p>
+          <li>
+            <TweetsFollowerText> Tweets: {user.tweets}</TweetsFollowerText>
+            <TweetsFollowerText> Followers: {followerCount.toLocaleString()}</TweetsFollowerText>
+            <button
+              onClick={handleFollow}
+              className={isFollowing ? "Following" : ""}
+              style={{
+                width: 120,
+                height: 35,
+                backgroundColor: "#ebd8ff",
+                borderRadius: 25,
+                outline: "transparent",
+                border: "none"
+              }}
+            >
+              {isFollowing ? "Following" : "Follow"}
+            </button>
+          </li>
+        </UserMenu>
+      </Hero>
+    </MainContainer>
   );
 };
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Отримуємо дані користувачів з бекенду
-    fetch('https://6488234f0e2469c038fd0ab2.mockapi.io/users')
-      .then(response => response.json())
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error:', error));
-  }, []);
+    loadUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  const loadUsers = () => {
+    setIsLoading(true);
+
+    fetch(
+      `https://6488234f0e2469c038fd0ab2.mockapi.io/users?page=${page}&limit=3`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setUsers((prevUsers) => [...prevUsers, ...data]);
+        setIsLoading(false);
+      })
+      .catch((error) => console.error("Error:", error));
+  };
+
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   return (
-    <div className="user-list">
-      {users.map(user => (
+    <div>
+      {users.map((user) => (
         <UserCard key={user.id} user={user} />
       ))}
+      {isLoading && <p>Loading...</p>}
+      {!isLoading && <LoadMore onClick={handleLoadMore}>Load More</LoadMore>}
     </div>
   );
 };
